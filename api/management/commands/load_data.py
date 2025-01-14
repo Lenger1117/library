@@ -1,42 +1,60 @@
 import json
-import csv
-import os.path
 from django.core.management.base import BaseCommand, CommandError
-from books.models import Book, Genre
-
+from books.models import Author, Book, Genre
+import pdb
 
 class Command(BaseCommand):
-
     def add_arguments(self, parser):
         parser.add_argument("--path", type=str)
 
     def handle(self, *args, **options):
-        file_path = "data/books.json"
+        authors_file_path = 'data/authors.json'
+        books_file_path = 'data/books.json'
+        genres_file_path = 'data/genres.json'
         try:
-            if os.path.exists(file_path) is True:
-                with open('data/books.json', encoding='utf-8',
-                          ) as data_file_books:
-                    book_data = json.loads(data_file_books.read())
-                    for books in book_data:
-                        Book.objects.get_or_create(**books)
-
-            else:
-                MODELS_FILES = {Book: 'books.csv', }
-                for model, file in MODELS_FILES.items():
-                    with open(f'/data/{file}', encoding='utf-8',
-                              ) as data_file_books_2:
-                        reader = csv.DictReader(data_file_books_2)
-                        model.objects.bulk_create(
-                            model(**data) for data in reader
-                        )
-
-            with open('data/genres.json', encoding='utf-8',
-                      ) as data_file_genres:
-                genres_data = json.loads(data_file_genres.read())
-                for genres in genres_data:
-                    Genre.objects.get_or_create(**genres)
-
-            self.stdout.write(self.style.SUCCESS('Данные загружены'))
-
+            self.load_authors(authors_file_path)
+            self.load_books(books_file_path)
+            self.load_genres(genres_file_path)
+            self.stdout.write(self.style.SUCCESS('Данные успешно загружены'))
         except FileNotFoundError:
             raise CommandError('Файл отсутствует в директории data')
+        except json.JSONDecodeError:
+            raise CommandError('Ошибка декодирования JSON файла')
+
+    def load_authors(self, file_path):
+        with open(file_path, encoding='utf-8') as data_file:
+            authors_data = json.load(data_file)
+            for author_data in authors_data:
+                Author.objects.get_or_create(**author_data)
+
+    def load_books(self, file_path):
+        with open(file_path, encoding='utf-8') as data_file:
+            books_data = json.load(data_file)
+            for book in books_data:
+                # Извлекаем поле authors, если оно есть, и удаляем его из данных
+                authors = book.pop('authors', None)
+            
+                # Создаем или получаем книгу без учета authors
+                book_instance, created = Book.objects.get_or_create(**book)
+            
+                # Если authors указано, обрабатываем связь
+                if authors:
+                    if isinstance(authors, list) and all(isinstance(a, int) for a in authors):
+                        print(f"Authors for book '{book_instance.name}': {authors}")
+                    
+                        # Получаем авторов по их ID
+                        author_objects = Author.objects.filter(id__in=authors)
+                    
+                        if not author_objects.exists():
+                            print(f"Нет авторов с идентификаторами: {authors}")
+                        else:
+                            # Устанавливаем ManyToMany связь
+                            book_instance.authors.set(author_objects)
+                    else:
+                        print(f"Неверный формат для authors: {authors}")
+
+    def load_genres(self, file_path):
+        with open(file_path, encoding='utf-8') as data_file:
+            genres_data = json.load(data_file)
+            for genre_data in genres_data:
+                Genre.objects.get_or_create(**genre_data)

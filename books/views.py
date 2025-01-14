@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Genre, Book
+from .models import Genre, Book, Author
 from .forms import BookForm
 
 
@@ -13,7 +13,7 @@ def genres(request):
     context = {'genres': genres}
     return render(request, 'books/genres.html', context)
 
-def genre(request, genre_id):
+def genre(request, genre_slug):
     """Выводит один жанр и список книг по этому жанру."""
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES)
@@ -21,9 +21,9 @@ def genre(request, genre_id):
             form.save()
     else:
         form = BookForm()
+    
     images = Book.objects.all()
-
-    genre = Genre.objects.get(id=genre_id)
-    books = genre.book_set.order_by('name') 
+    genre = Genre.objects.get(slug=genre_slug)
+    books = genre.book_set.order_by('-time_create') 
     context = {'genre': genre, 'books': books, 'form': form, 'images': images}
     return render(request, 'books/genre.html', context)

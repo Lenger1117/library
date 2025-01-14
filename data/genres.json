@@ -1,6 +1,6 @@
 [{"name": "Детективы", "color": "#8B4513", "slug": "detective"},
 {"name": "Фантастика", "color": "#000080", "slug": "fantastic"},
-{"name": "Фэнтези ", "color": "#483D8B", "slug": "fantasy"},
+{"name": "Фэнтези", "color": "#483D8B", "slug": "fantasy"},
 {"name": "Любовные романы", "color": "#DDA0DD", "slug": "romance_novels"},
 {"name": "Ужасы / мистика", "color": "#2F4F4F", "slug": "horror_mystic"},
 {"name": "Боевики, остросюжетная литература", "color": "#CD853F", "slug": "action_movie"},

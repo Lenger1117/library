@@ -9,8 +9,10 @@
     <meta charset="utf-8">
     <!-- Краткий анонс страницы -->
     <meta name="description" content="Краткое описание страницы">
+
     <!-- Этот заголовок будет показан как название вкладки браузера -->
-    <title>Библиотека им. Кокошки</title>
+    <title> {% block title %} {% endblock %} </title>
+    
     <!-- Иконка сайта, будет показана на вкладке браузера -->
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}" >
     {% bootstrap_css %}
@@ -18,63 +20,12 @@
   </head> 
 
   <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border sticky-top bg-body-tertiary">
-      <a class="navbar-brand" href="{% url 'books:index'%}">Библиотека им. Кокошки</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'books:genres'%}">Жанры</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-          {% if user.is_authenticated %}
-          <li class="nav-item">
-            <span class="navbar-text">Привет, {{ user.username }}.</span>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:logout' %}">Выйти</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:register' %}">Регистрация</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:login' %}">Войти</a
-          ></li>
-          {% endif %}
-        </ul>
-      </div>
-    </nav>
+    {% include 'includes/header.html' %}
     <main role="main" class="container">
-    <div class="pb-2 mb-2 border-bottom">
-    {% block page_header %}{% endblock page_header %}
-    </div>
-    <div>
-    {% block content %}{% endblock content %}
-    </div>
+      {% block content %}{% endblock content %}
     </main>
       
-    <footer>
-      <div class="d-flex flex-row-reverse sticky-bottom">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Частые вопросы</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Вакансии</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Контакты</a>
-          </li>
-        </ul>
-      </div>
-    </footer>
+    {% include 'includes/footer.html' %}
      
   </body>
-
-
 </html>

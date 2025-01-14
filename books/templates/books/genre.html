@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% block title %} {{ genre }} {% endblock %}
+
 {% block content %}
 
 <p>Жанры: {{ genre }}</p>
@@ -16,7 +19,7 @@
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{ book.name }}</h5>
-        <p class="card-text"><b>Автор:</b> {{ book.author }}</p>
+        <p class="card-text"><b>Автор:</b> {{ author.name }}</p>
         <p class="card-text"><b>Год выпуска произведения:</b> {{ book.year_of_issue }}</p>
         <p class="card-text"><b>Описание:</b> {{ book.description|linebreaks }}</p>
         <p class="card-text"><small class="text-body-secondary"><b>Наличие в библиотеке:</b> {{ book.availability }}</small></p>

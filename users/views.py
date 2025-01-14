@@ -13,7 +13,7 @@ def register(request):
 
         if form.is_valid():
             new_user = form.save()
-            #Выполнение входы и перенаправление на домашнюю страницу
+            #Выполнение входа и перенаправление на домашнюю страницу
             login(request, new_user)
             return redirect('books:index')
     
