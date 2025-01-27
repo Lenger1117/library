@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Genre, Book, Author
+from .models import Genre, Book, Author, AuthorBook
 from .forms import BookForm
 
 
@@ -24,6 +24,7 @@ def genre(request, genre_slug):
     
     images = Book.objects.all()
     genre = Genre.objects.get(slug=genre_slug)
+    #author = AuthorBook.author_set.all()
     books = genre.book_set.order_by('-time_create') 
     context = {'genre': genre, 'books': books, 'form': form, 'images': images}
     return render(request, 'books/genre.html', context)
