@@ -12,4 +12,5 @@ urlpatterns = [
     path('genres/', views.genres, name='genres'),
     # Страница со списком книг по отдельным жанрам
     path('genre/<slug:genre_slug>/', views.genre, name='genre'),
+    path('book/<slug:book_slug>/', views.genre, name='book'),
     ]

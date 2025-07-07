@@ -2,11 +2,12 @@ from django.db import models
 import datetime
 from django.db.models import UniqueConstraint
 from django.core.validators import MinValueValidator, MaxValueValidator
+from .utils import unique_slugify
 
 
 class Author(models.Model):
     name = models.CharField(max_length=200, verbose_name='Имя автора', unique=True)
-    slug = models.SlugField(max_length=200,  verbose_name='Slug', blank=True, default='')
+    slug = models.SlugField(max_length=200,  verbose_name='Slug_author', unique=False, db_index=True)
     description = models.TextField(verbose_name='Описание', blank=True, null=True)
 
     class Meta:
@@ -16,11 +17,19 @@ class Author(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+    def save(self, *args, **kwargs):
+        """
+        Сохранение полей модели при их отсутствии заполнения
+        """
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
 
 class Genre(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название жанра', unique=True)
     color = models.CharField(max_length=7, verbose_name='Цвет')
-    slug = models.SlugField(max_length=200, verbose_name='Slug', unique=True, db_index=True)
+    slug = models.SlugField(max_length=200, verbose_name='Slug_genre', unique=True, db_index=True)
 
     class Meta:
         ordering = ('-name',)
@@ -29,6 +38,14 @@ class Genre(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+    def save(self, *args, **kwargs):
+        """
+        Сохранение полей модели при их отсутствии заполнения
+        """
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
 
 
 class Book(models.Model):
@@ -41,7 +58,7 @@ class Book(models.Model):
     image = models.ImageField(upload_to='books/image/', blank=True, null=True, verbose_name='Изображение')
     genres = models.ManyToManyField(Genre, blank=True, verbose_name='Жанры', through='GenreBook')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата поступления в библиотеку')
-    #slug = models.SlugField(max_length=200, verbose_name='Slug', unique=True, db_index=True)
+    slug = models.SlugField(max_length=200, verbose_name='Slug_book', unique=True, db_index=True)
     
     class Meta:
         ordering = ('-name',)
@@ -51,6 +68,14 @@ class Book(models.Model):
     def __str__(self):
         """Возвращает строковое представление модели."""
         return self.name
+    
+    def save(self, *args, **kwargs):
+        """
+        Сохранение полей модели при их отсутствии заполнения
+        """
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
 
 
 

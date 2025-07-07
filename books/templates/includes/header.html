@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border sticky-top bg-body-tertiary">
+<nav class="navbar navbar-expand-md navbar-light bg-light border sticky-top bg-body-tertiary">
     <a class="navbar-brand" href="{% url 'books:index'%}">Библиотека им. Кокошки</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
       aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,6 +26,15 @@
           <a class="nav-link" href="{% url 'users:login' %}">Войти</a
         ></li>
         {% endif %}
+      </ul>
+    </div>
+  </nav>
+  <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border sticky-top bg-body-tertiary">
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'books:genres'%}">Контакты</a>
+        </li>
       </ul>
     </div>
   </nav>

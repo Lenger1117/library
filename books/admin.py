@@ -5,6 +5,7 @@ from .models import Book, Genre, Author, AuthorBook, GenreBook
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name', )}
     list_display = ('name', 'description',
                     'year_of_issue', 'availability',
                     'time_create', 'get_genres', 'get_authors')
@@ -36,7 +37,7 @@ class GenreAdmin(admin.ModelAdmin):
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name', )}
-    list_display = ('id', 'name', 'slug')
+    list_display = ('name', 'slug')
     search_fields = ('name', 'slug')
     list_filter = ('name', )
     empty_value_display = '-пусто-'
