@@ -1,10 +1,14 @@
 {% extends "base.html" %}
+{% load bootstrap4 %}
 
 {% block content %}
-  <form method="post" action="{% url 'users:register' %}">
+  <h2>Регистрация</h2>
+  <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button name="submit">Регистрация</button>
+    {% bootstrap_form form %}
+    {% buttons %}
+      <button type="submit" class="btn btn-success">Регистрация</button>
+    {% endbuttons %}
     <input type="hidden" name="next" value="{% url 'books:index' %}" />
   </form>
-{% endblock content %}
+{% endblock %}
