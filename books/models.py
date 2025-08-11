@@ -54,10 +54,10 @@ class Book(models.Model):
     authors = models.ManyToManyField(Author, verbose_name='Автор', through='AuthorBook', blank=True)
     description = models.TextField(verbose_name='Описание')
     year_of_issue = models.IntegerField(validators=[MinValueValidator(4), MaxValueValidator(datetime.datetime.now().year)], verbose_name='Год выпуска')
-    availability = models.IntegerField(validators=[MaxValueValidator(100)], verbose_name='Наличие в библиотеке')
+    availability = models.IntegerField(validators=[MaxValueValidator(100)], verbose_name='Наличие')
     image = models.ImageField(upload_to='books/image/', blank=True, null=True, verbose_name='Изображение')
     genres = models.ManyToManyField(Genre, blank=True, verbose_name='Жанры', through='GenreBook')
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата поступления в библиотеку')
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата поступления')
     slug = models.SlugField(max_length=200, verbose_name='Slug_book', unique=True, db_index=True)
     
     class Meta:
