@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %} {{ book.name }} {% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card mb-3" style="max-width: 800px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        {% if book.image %}
+          <img src="{{ book.image.url }}" class="img-thumbnail">
+        {% else %}
+          <p>Изображение не загружено</p>
+        {% endif %}
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ book.name }}</h5>
+
+          {% if book.authors.count == 1 %}
+            <p class="card-text"><b>Автор:</b> {{ book.authors.first.name }}</p>
+          {% else %}
+            <p class="card-text"><b>Авторы:</b> {{ book.authors.all|join:", " }}</p>
+          {% endif %}
+
+          <p class="card-text"><b>Год выпуска:</b> {{ book.year_of_issue }}</p>
+          <p class="card-text"><b>Жанры:</b> {{ book.genres.all|join:", " }}</p>
+          <p class="card-text"><b>Описание:</b> {{ book.description|linebreaks }}</p>
+          <p class="card-text"><small class="text-body-secondary"><b>Наличие в библиотеке:</b> {{ book.availability }}</small></p>
+
+          <form method="post" action="{% url 'books:favorite' book.slug %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">
+          {% if is_favorite %}
+          Удалить из избранного
+          {% else %}
+          Добавить в избранное
+          {% endif %}
+          </button>
+          </form>
+
+          {% if not request.user.is_authenticated %}
+          <p class="text-muted small">Чтобы добавить книгу в избранное, пожалуйста, <a href="{% url 'users:login' %}">войдите в аккаунт</a> или <a href="{% url 'users:register' %}">зарегистрируйтесь</a>.</p>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Отображение сообщений -->
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock content %}

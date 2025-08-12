@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %} Избранное {% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2>Избранные книги</h2>
+  {% if favorite_books %}
+    <ul class="list-group">
+      {% for favorite in favorite_books %}
+        <li class="list-group-item">
+          <a href="{% url 'books:book' favorite.book.slug %}">{{ favorite.book.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Вы пока не добавили ни одной книги в избранное.</p>
+  {% endif %}
+</div>
+{% endblock content %}

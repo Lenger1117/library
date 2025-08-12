@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 import datetime
 from django.db.models import UniqueConstraint
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -102,5 +103,30 @@ class AuthorBook(models.Model):
                         name='book_author_unique')]
         verbose_name = 'Автор-Книга'
         verbose_name_plural = 'Авторы-Книга'
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='favorites'
+    )
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        verbose_name='Книга',
+        related_name='favorites'
+    )
+
+    class Meta:
+        constraints = [UniqueConstraint(
+            fields=['user', 'book'],
+            name='user_favorite_unique')]
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное'
+
+    def __str__(self) -> str:
+        return f'{self.user} - {self.book}'
 
 
