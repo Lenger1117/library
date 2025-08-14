@@ -1,42 +1,58 @@
 {% extends "base.html" %}
 
-{% block title %} {{ genre }} {% endblock %}
+{% block title %} {{ genre.name }} {% endblock %}
 
 {% block content %}
+<div class="container">
+  <h2>Книги жанра "{{ genre.name }}"</h2>
+  <div class="row row-cols-1 row-cols-md-5 g-4">
+    {% for book in books %}
+      <div class="col">
+        <div class="card h-100 text-center">
+          <!-- Обложка книги -->
+          <div class="card-img-top position-relative">
+            {% if book.image %}
+              <img src="{{ book.image.url }}" class="card-img-top img-fluid" alt="{{ book.name }}">
+            {% else %}
+              <div class="card-img-top bg-light d-flex justify-content-center align-items-center" style="height: 200px;">
+                <p class="text-muted">Нет обложки</p>
+              </div>
+            {% endif %}
+          </div>
 
-<p>Жанр: {{ genre }}</p>
-<p>Книги:</p>
-{% for book in books %}
-<div class="card mb-3" style="max-width: 800px;">
-  <div class="row g-0">
-    <div class="col-md-4">
-      {% if book.image %}
-        <img src="{{ book.image.url }}" class="img-thumbnail">
-      {% else %}
-        Изображение не загружено
-      {% endif %}
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <a href="{% url 'books:book' book.slug %}"><h5 class="card-title">{{ book.name }}</h5></a>
+          <!-- Название книги -->
+          <div class="card-body">
+            <h5 class="card-title fw-bold">
+              <a href="{% url 'books:book' book.slug %}" class="text-decoration-none text-dark">
+                {{ book.name }}
+              </a>
+            </h5>
 
-        {% if book.authors.count == 1 %}
-        <p class="card-text"><b>Автор: </b>{{ book.authors.first.name }}</p>
-        {% else %}
-        <p class="card-text"><b>Авторы:</b> {{ book.authors.all|join:", " }}</p>
-        {% endif %}
+            <!-- Автор(ы) и кнопка избранного -->
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="card-text text-secondary mb-0">
+                {% if book.authors.count == 1 %}
+                  {{ book.authors.first.name }}
+                {% else %}
+                  {{ book.authors.first.name }} и др.
+                {% endif %}
+              </p>
 
-        <p class="card-text"><b>Год выпуска произведения:</b> {{ book.year_of_issue }}</p>
-        <p class="card-text"><b>Жанры:</b>  {{ book.genres.all|join:", " }}</p>
-        <p class="card-text"><b>Описание:</b> {{ book.description|linebreaks }}</p>
-        <p class="card-text"><small class="text-body-secondary"><b>Наличие в библиотеке:</b> {{ book.availability }}</small></p>
+              <!-- Кнопка избранного -->
+              <form method="post" action="{% url 'books:favorite' book.slug %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn p-0 border-0" style="background: none;">
+                  <i class="{% if book.slug in favorite_slugs %}fas fa-heart text-danger{% else %}far fa-heart text-secondary{% endif %}"></i>
+                </button>
+                <div id="scroll-to-here"></div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    {% empty %}
+      <p>По этому жанру пока нет книг.</p>
+    {% endfor %}
   </div>
 </div>
-{% empty %}
-      <li>По этому жанру пока нет книг.</li>
-{% endfor %}
-
-
 {% endblock content %}

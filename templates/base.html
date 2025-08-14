@@ -5,27 +5,19 @@
 <html lang="ru">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- На странице используется кодировка utf-8 -->
     <meta charset="utf-8">
-    <!-- Краткий анонс страницы -->
     <meta name="description" content="Краткое описание страницы">
-
-    <!-- Этот заголовок будет показан как название вкладки браузера -->
-    <title> {% block title %} {% endblock %} </title>
-    
-    <!-- Иконка сайта, будет показана на вкладке браузера -->
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}" >
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
-  </head> 
-
-  <body>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
     {% include 'includes/header.html' %}
     <main role="main" class="container">
-      {% block content %}{% endblock content %}
+        {% block content %}{% endblock content %}
     </main>
-      
     {% include 'includes/footer.html' %}
-     
-  </body>
+</body>
 </html>

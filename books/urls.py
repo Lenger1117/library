@@ -1,5 +1,3 @@
-"""Определяет схемы URL для Книг."""
-
 from django.urls import path
 from . import views
 
@@ -12,4 +10,6 @@ urlpatterns = [
     path('genre/<slug:genre_slug>/', views.genre, name='genre'),
     path('favorites/', views.favorites, name='favorites'),
     path('favorite/<slug:book_slug>/', views.favorite, name='favorite'),
+    path('add-book/', views.add_book, name='add_book'),
+    path('book/<slug:book_slug>/edit', views.edit_book, name='edit_book'),
 ]

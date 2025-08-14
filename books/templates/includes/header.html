@@ -9,6 +9,11 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'books:genres'%}">Жанры</a>
         </li>
+        {% if user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'books:add_book' %}">Добавить книгу</a>
+        </li>
+        {% endif %}
       </ul>
       <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}

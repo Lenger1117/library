@@ -28,19 +28,29 @@
           <p class="card-text"><b>Описание:</b> {{ book.description|linebreaks }}</p>
           <p class="card-text"><small class="text-body-secondary"><b>Наличие в библиотеке:</b> {{ book.availability }}</small></p>
 
-          <form method="post" action="{% url 'books:favorite' book.slug %}" class="d-inline">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-primary">
-          {% if is_favorite %}
-          Удалить из избранного
-          {% else %}
-          Добавить в избранное
+          <!-- Кнопка "Редактировать" -->
+          {% if request.user.is_superuser %}
+            <a href="{% url 'books:edit_book' book.slug %}" class="btn btn-outline-secondary btn-sm mt-2">
+              Редактировать
+            </a>
           {% endif %}
-          </button>
+
+          <form method="post" action="{% url 'books:favorite' book.slug %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">
+              {% if is_favorite %}
+                Удалить из избранного
+              {% else %}
+                Добавить в избранное
+              {% endif %}
+            </button>
           </form>
 
           {% if not request.user.is_authenticated %}
-          <p class="text-muted small">Чтобы добавить книгу в избранное, пожалуйста, <a href="{% url 'users:login' %}">войдите в аккаунт</a> или <a href="{% url 'users:register' %}">зарегистрируйтесь</a>.</p>
+            <p class="text-muted small">Чтобы добавить книгу в избранное, пожалуйста, 
+              <a href="{% url 'users:login' %}">войдите в аккаунт</a> или 
+              <a href="{% url 'users:register' %}">зарегистрируйтесь</a>.
+            </p>
           {% endif %}
 
         </div>
@@ -48,6 +58,7 @@
     </div>
   </div>
 </div>
+
 <!-- Отображение сообщений -->
 {% if messages %}
   <div class="container mt-3">

@@ -8,8 +8,19 @@
   {% if favorite_books %}
     <ul class="list-group">
       {% for favorite in favorite_books %}
-        <li class="list-group-item">
-          <a href="{% url 'books:book' favorite.book.slug %}">{{ favorite.book.name }}</a>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <!-- Название книги -->
+          <a href="{% url 'books:book' favorite.book.slug %}" class="text-decoration-none text-dark">
+            {{ favorite.book.name }}
+          </a>
+
+          <!-- Кнопка удаления из избранного -->
+          <form method="post" action="{% url 'books:favorite' favorite.book.slug %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn p-0 border-0" style="background: none;">
+              <i class="fas fa-heart text-danger"></i> <!-- Заполненное сердечко -->
+            </button>
+          </form>
         </li>
       {% endfor %}
     </ul>

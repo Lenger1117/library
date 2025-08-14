@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %} Редактировать книгу "{{ book.name }}" {% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <h2>Редактировать книгу "{{ book.name }}"</h2>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="{{ form.name.id_for_label }}" class="form-label">Название</label>
+      {{ form.name }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.authors.id_for_label }}" class="form-label">Авторы</label>
+      {{ form.authors }}
+      <small class="form-text text-muted">{{ form.authors.help_text }}</small>
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.genres.id_for_label }}" class="form-label">Жанры</label>
+      {{ form.genres }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.description.id_for_label }}" class="form-label">Описание</label>
+      {{ form.description }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.image.id_for_label }}" class="form-label">Изображение</label>
+      {{ form.image }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.year_of_issue.id_for_label }}" class="form-label">Год выпуска</label>
+      {{ form.year_of_issue }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.availability.id_for_label }}" class="form-label">Наличие</label>
+      {{ form.availability }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+  </form>
+</div>
+
+{% endblock content %}

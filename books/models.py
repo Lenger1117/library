@@ -20,9 +20,7 @@ class Author(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        """
-        Сохранение полей модели при их отсутствии заполнения
-        """
+        """Сохранение полей модели при их отсутствии заполнения."""
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
@@ -41,16 +39,13 @@ class Genre(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        """
-        Сохранение полей модели при их отсутствии заполнения
-        """
+        """Сохранение полей модели при их отсутствии заполнения."""
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
 
 
 class Book(models.Model):
-    """Книги в библиотеке"""
     name = models.CharField(max_length=200, db_index=True, verbose_name='Название книги')
     authors = models.ManyToManyField(Author, verbose_name='Автор', through='AuthorBook', blank=True)
     description = models.TextField(verbose_name='Описание')
@@ -71,9 +66,7 @@ class Book(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        """
-        Сохранение полей модели при их отсутствии заполнения
-        """
+        """Сохранение полей модели при их отсутствии заполнения."""
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
