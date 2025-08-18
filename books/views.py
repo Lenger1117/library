@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from .models import Genre, Book, Author, AuthorBook, Favorite
+from .models import Genre, Book, Author, AuthorBook, Favorite, Review
 from .forms import BookForm
 
 
@@ -124,4 +124,21 @@ def edit_book(request, book_slug):
 @login_required
 def add_review(request, book_slug):
     """Добавление отзыва к книге"""
-    pass
+    book = get_object_or_404(Book, slug=book_slug)
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+
+        if not Review.objects.filter(book=book, user=request.user).exists():
+            Review.objects.create(
+                book=book,
+                user=request.user,
+                rating=rating, 
+                comment=comment
+            )
+            messages.success(request, 'Ващ отзыв успешно добавлен.')
+        else:
+            messages.success(request, 'Вы уже оставляли отзыв на эту книгу.')
+
+    return redirect('books:book', book_slug=book.slug)

@@ -77,7 +77,7 @@ class Book(models.Model):
         if reviews.exists():
             total_rating = sum(review.rating for review in reviews)
             return round(total_rating / reviews.count(), 1)
-        return 0
+        return None
     
     def review_count(self):
         """Возвращение кол-ва отзывов к книге"""
