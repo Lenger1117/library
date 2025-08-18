@@ -70,7 +70,18 @@ class Book(models.Model):
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
         super().save(*args, **kwargs)
-
+    
+    def average_rating(self):
+        """Вычисление средней оценки книги"""
+        reviews = self.reviews.all()
+        if reviews.exists():
+            total_rating = sum(review.rating for review in reviews)
+            return round(total_rating / reviews.count(), 1)
+        return 0
+    
+    def review_count(self):
+        """Возвращение кол-ва отзывов к книге"""
+        return self.reviews.count()
 
 
 
@@ -123,3 +134,29 @@ class Favorite(models.Model):
         return f'{self.user} - {self.book}'
 
 
+class Review(models.Model):
+        book = models.ForeignKey(
+            Book,
+            on_delete=models.CASCADE,
+            verbose_name='Книга',
+            related_name='reviews'
+        )
+        user = models.ForeignKey(
+            User,
+            on_delete=models.CASCADE,
+            verbose_name='Пользователь',
+            related_name='reviews'
+        )
+        rating = models.PositiveIntegerField(
+            choices = [(i, i) for i in range(1, 6)],
+            verbose_name='Оценка'
+        )
+        comment = models.TextField(blank=True, null=True, verbose_name='Отзыв')
+        created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    
+        class Meta:
+            verbose_name = "Отзыв"
+            verbose_name_plural = "Отзывы"
+
+        def __str__(self):
+            return f"Отзыв на {self.book.name} от {self.user.username}"  

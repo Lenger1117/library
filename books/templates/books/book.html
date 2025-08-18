@@ -16,6 +16,14 @@
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title">{{ book.name }}</h5>
+          
+          <!-- Средняя оценка и кол-во отзывов -->
+           <p class="card-text">
+              <a href="#reviews" class="text-decoration-none text-dark">
+                Оценка: {{ book.average_rating|default: "Нет оценок"}}
+                ({{ book.review_count }} отзыв{{ book.review.count|pluralize:"ов"}})
+              </a>
+           </p>
 
           {% if book.authors.count == 1 %}
             <p class="card-text"><b>Автор:</b> {{ book.authors.first.name }}</p>
@@ -52,6 +60,12 @@
               <a href="{% url 'users:register' %}">зарегистрируйтесь</a>.
             </p>
           {% endif %}
+
+          <!-- Форма добавления отзывов -->
+
+          <!-- Отзывы -->
+
+
 
         </div>
       </div>

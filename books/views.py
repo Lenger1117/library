@@ -120,3 +120,8 @@ def edit_book(request, book_slug):
         form = BookForm(instance=book)
 
     return render(request, 'books/edit_book.html', {'form': form, 'book': book})
+
+@login_required
+def add_review(request, book_slug):
+    """Добавление отзыва к книге"""
+    pass
