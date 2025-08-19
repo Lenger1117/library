@@ -1,0 +1,15 @@
+.dropdown-menu {
+  max-height: 600px; /* Ограничение высоты выпадающего меню */
+  overflow-y: auto; /* Добавление прокрутки при необходимости */
+}
+
+.dropdown-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Три столбца */
+  gap: 10px; /* Расстояние между элементами */
+}
+
+.dropdown-grid a {
+  text-decoration: none;
+  color: #000;
+}

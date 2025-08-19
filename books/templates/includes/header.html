@@ -1,20 +1,37 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light border sticky-top bg-body-tertiary">
-    <a class="navbar-brand" href="{% url 'books:index'%}">Библиотека им. Кокошки</a>
+    <a class="navbar-brand" href="{% url 'books:index' %}">Библиотека им. Кокошки</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
       aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'books:genres'%}">Жанры</a>
+        <!-- Выпадающее меню для жанров -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGenres" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Жанры
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownGenres">
+  <div class="dropdown-grid">
+    {% for genre in genres %}
+      <a class="dropdown-item" href="{% url 'books:genre' genre.slug %}">{{ genre }}</a>
+    {% empty %}
+      <span class="dropdown-item disabled">Нет доступных жанров</span>
+    {% endfor %}
+  </div>
+</div>
         </li>
+
+        <!-- Добавление книги (для администраторов) -->
         {% if user.is_superuser %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'books:add_book' %}">Добавить книгу</a>
         </li>
         {% endif %}
       </ul>
+
+      <!-- Правая часть меню -->
       <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}
         <li class="nav-item">
@@ -31,18 +48,9 @@
           <a class="nav-link" href="{% url 'users:register' %}">Регистрация</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'users:login' %}">Войти</a
-        ></li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
-  <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border sticky-top bg-body-tertiary">
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'books:genres'%}">Контакты</a>
+          <a class="nav-link" href="{% url 'users:login' %}">Войти</a>
         </li>
+        {% endif %}
       </ul>
     </div>
   </nav>
