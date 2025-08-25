@@ -12,7 +12,9 @@
           <!-- Обложка книги -->
           <div class="card-img-top position-relative">
             {% if book.image %}
+            <a href="{% url 'books:book' book.slug %}">
               <img src="{{ book.image.url }}" class="card-img-top img-fluid" alt="{{ book.name }}">
+            </a>
             {% else %}
               <div class="card-img-top bg-light d-flex justify-content-center align-items-center" style="height: 200px;">
                 <p class="text-muted">Нет обложки</p>

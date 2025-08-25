@@ -1,5 +1,6 @@
 asgiref==3.7.2
 beautifulsoup4==4.12.3
+coverage==7.10.5
 Django==3.2.25
 django-bootstrap4==23.1
 importlib-metadata==2.1.3
